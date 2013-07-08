@@ -1,0 +1,29 @@
+NDKROOT=@NDKROOT@
+UNAME=@UNAME@
+AGCC=$(NDKROOT)/toolchains/arm-linux-androideabi-4.4.3/prebuilt/$(UNAME)-x86/bin/arm-linux-androideabi-gcc
+ACPPFLAGS := -DANDROID -DOS_ANDROID -DNDK_BUILD
+ACFLAGS := --sysroot $(NDKROOT)/platforms/android-9/arch-arm -fPIC -mandroid
+ALDFLAGS :=--sysroot $(NDKROOT)/platforms/android-9/arch-arm -fPIC -mandroid
+
+CFLAGS += -fno-strict-aliasing
+CFLAGS += -DENABLE_DEBUG
+CFLAGS += -DENABLE_REPLAY
+
+.PHONY: all clean push
+
+all: ntpclient
+
+%.o : %.c
+	$(AGCC) -c $($@_CPPFLAGS) $(ACPPFLAGS) $(CPPFLAGS) $($@_CFLAGS) $(ACFLAGS) $(CFLAGS) $< -o $@
+
+ntpclient: adjtimex_android.o ntpclient.o phaselock.o
+	$(AGCC) $($@_LDFLAGS) $(ALDFLAGS) $(LDFLAGS) $^ -o $@
+
+ntpclient.o phaselock.o: ntpclient.h
+
+push: ntpclient
+	adb push ntpclient /mnt/sdcard
+	adb shell su -c 'dd if=/mnt/sdcard/ntpclient of=/data/ntpclient; chmod 700 /data/ntpclient; rm /mnt/sdcard/ntpclient'
+
+clean:
+	rm -f ntpclient *.o

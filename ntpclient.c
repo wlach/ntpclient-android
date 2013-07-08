@@ -79,17 +79,12 @@ typedef uint32_t u32;  /* universal for C99 */
 /* typedef u_int32_t u32;   older Linux installs? */
 
 /* XXX fixme - non-automatic build configuration */
-#ifdef __linux__
-#include <sys/utsname.h>
-#include <sys/time.h>
-#include <sys/timex.h>
-#include <netdb.h>
-#else
+#include <linux/timex.h>
 extern struct hostent *gethostbyname(const char *name);
 extern int h_errno;
 #define herror(hostname) \
 	fprintf(stderr,"Error %d looking up hostname %s\n", h_errno,hostname)
-#endif
+
 /* end configuration for host systems */
 
 #define JAN_1970        0x83aa7e80      /* 2208988800 1970 - 1900 in seconds */
