@@ -23,7 +23,7 @@ ntpclient.o phaselock.o: ntpclient.h
 
 push: ntpclient
 	adb push ntpclient /mnt/sdcard
-	adb shell su -c 'dd if=/mnt/sdcard/ntpclient of=/data/ntpclient; chmod 700 /data/ntpclient; rm /mnt/sdcard/ntpclient'
+	adb shell su -c 'dd if=/mnt/sdcard/ntpclient of=/data/local/ntpclient; chmod 700 /data/local/ntpclient; rm /mnt/sdcard/ntpclient'
 
 clean:
 	rm -f ntpclient *.o
