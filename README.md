@@ -1,3 +1,5 @@
+**This project is discontinued. See https://github.com/wlach/ntpclient-android/issues/4#issuecomment-1099851669 for some more up to date advice on doing this with modern versions of Android**
+
 ntpclient-android
 =================
 
